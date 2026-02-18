@@ -1,0 +1,37 @@
+name: 'Docker Run Action'
+description: 'Run a command in a new container'
+author: 'Sergei Predvoditelev'
+branding:
+  icon: 'box'
+  color: 'blue'
+inputs:
+  image:
+    description: 'Docker image to run (e.g. ubuntu:24.04, python:3.12)'
+    required: true
+  registry:
+    description: 'Docker registry URL for authentication (e.g. ghcr.io, docker.io)'
+    required: false
+  username:
+    description: 'Username for Docker registry authentication'
+    required: false
+  password:
+    description: 'Password or token for Docker registry authentication'
+    required: false
+  options:
+    description: 'Additional docker run options (e.g. --network host --cpus 2)'
+    required: false
+    default: ''
+  volumes:
+    description: 'Volume mounts, one per line (e.g. /host/path:/container/path)'
+    required: false
+    default: ''
+  env:
+    description: 'Environment variables, one per line (e.g. MY_VAR=some value)'
+    required: false
+    default: ''
+  command:
+    description: 'Shell command to run inside the container'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

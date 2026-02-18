@@ -1,0 +1,20 @@
+name: Linters
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  linters:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Hadolint
+        uses: hadolint/hadolint-action@v3.3.0
+
+      - name: Shellcheck
+        run: shellcheck entrypoint.sh

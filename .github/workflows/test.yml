@@ -1,0 +1,109 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Run docker action
+        uses: ./
+        with:
+          image: docker:29.0.3
+          volumes: ${{ github.workspace }}:/work
+          command: |
+            echo "$DOCKER_VERSION" > /work/docker-version.txt
+      - name: Test the output
+        run: |
+          result=$(cat docker-version.txt)
+          if [ "$result" != "29.0.3" ]; then
+            echo "Smoke Test Failed: expected '29.0.3', got '$result'"
+            exit 1
+          fi
+
+  volume-mount-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Create File to be mounted
+        run: echo "some text" > someFile
+      - name: Run docker action with mounted workspace
+        uses: ./
+        with:
+          image: docker:29.0.3
+          volumes: ${{ github.workspace }}:/work
+          command: |
+            cat /work/someFile > /work/result.txt
+      - name: Check if file contents match
+        run: |
+          result=$(cat result.txt)
+          if [ "$result" != "some text" ]; then
+            echo "Volume mount test failed: expected 'some text', got '$result'"
+            exit 1
+          fi
+
+  multiline-command-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Run docker action with multiline command
+        uses: ./
+        with:
+          image: docker:29.0.3
+          volumes: ${{ github.workspace }}:/work
+          command: |
+            echo "line1
+            line2" > /work/multiline.txt
+      - name: Check multiline output
+        run: |
+          expected="line1
+          line2"
+          result=$(cat multiline.txt)
+          if [ "$result" != "$expected" ]; then
+            echo "Multiline test failed: expected '$expected', got '$result'"
+            exit 1
+          fi
+
+  env-variable-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Run docker action with environment variable
+        uses: ./
+        with:
+          image: docker:29.0.3
+          volumes: ${{ github.workspace }}:/work
+          env: GREETING=Hello World
+          command: |
+            echo "$GREETING" > /work/env-result.txt
+      - name: Check environment variable
+        run: |
+          result=$(cat env-result.txt)
+          if [ "$result" != "Hello World" ]; then
+            echo "Env variable test failed: expected 'Hello World', got '$result'"
+            exit 1
+          fi
+
+  bash-command-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Run docker action with bash -c
+        uses: ./
+        with:
+          image: bash:5
+          volumes: ${{ github.workspace }}:/work
+          command: |
+            bash -c 'arr=(one two three); echo "${arr[@]}" > /work/bash-result.txt'
+      - name: Check bash output
+        run: |
+          result=$(cat bash-result.txt)
+          if [ "$result" != "one two three" ]; then
+            echo "Bash test failed: expected 'one two three', got '$result'"
+            exit 1
+          fi
