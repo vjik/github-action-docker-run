@@ -4,12 +4,16 @@ set -eu
 username=${INPUT_USERNAME-}
 password=${INPUT_PASSWORD-}
 registry=${INPUT_REGISTRY-}
-if [ -n "$username" ] || [ -n "$password" ] || [ -n "$registry" ]; then
-  if [ -z "$username" ] || [ -z "$password" ] || [ -z "$registry" ]; then
-    echo "Error: username, password and registry must be all set or all unset." >&2
+if [ -n "$username" ] || [ -n "$password" ]; then
+  if [ -z "$username" ] || [ -z "$password" ]; then
+    echo "Error: username and password must be both set or both unset." >&2
     exit 1
   fi
-  printf '%s' "$password" | docker login "$registry" -u "$username" --password-stdin
+  if [ -n "$registry" ]; then
+    printf '%s' "$password" | docker login "$registry" -u "$username" --password-stdin
+  else
+    printf '%s' "$password" | docker login -u "$username" --password-stdin
+  fi
 fi
 
 inputOptions="--rm ${INPUT_OPTIONS-}"
