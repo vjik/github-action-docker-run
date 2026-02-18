@@ -23,7 +23,7 @@ jobs:
         with:
           script: |
             const dockerVersion = '${{ steps.run-docker.outputs.docker-version }}';
-            if (dockerVersion !== '29.0.4') {
+            if (dockerVersion !== '29.0.3') {
               core.setFailed(`Smoke Test Failed`);
             }
 
