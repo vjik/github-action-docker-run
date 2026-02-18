@@ -1,5 +1,5 @@
-# `docker-run` GitHub Action Changelog
+# `vjik/docker-run` GitHub Action Changelog
 
-## 1.0.0 under development
+## v1 February 18, 2026
 
 - Initial release.
