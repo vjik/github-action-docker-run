@@ -1,7 +1,7 @@
-# `docker-run` GitHub Action
+# `vjik/docker-run` GitHub Action
 
-[![GitHub release](https://img.shields.io/github/v/release/vjik/github-action-docker-run?style=flat-square)](https://github.com/vjik/github-action-docker-run/releases)
-[![License](https://img.shields.io/github/license/vjik/github-action-docker-run?style=flat-square)](./LICENSE)
+[![GitHub release](https://img.shields.io/github/v/release/vjik/docker-run?style=flat-square)](https://github.com/vjik/docker-run/releases)
+[![License](https://img.shields.io/github/license/vjik/docker-run?style=flat-square)](./LICENSE)
 
 GitHub Action that runs a command in a new Docker container with a simple, declarative syntax.
 
@@ -27,7 +27,7 @@ GitHub Action that runs a command in a new Docker container with a simple, decla
 ### Basic
 
 ```yaml
-- uses: vjik/github-action-docker-run@v1
+- uses: vjik/docker-run@v1
   with:
     image: ubuntu:24.04
     command: echo "Hello from container"
@@ -36,7 +36,7 @@ GitHub Action that runs a command in a new Docker container with a simple, decla
 ### Volume mounts and environment variables
 
 ```yaml
-- uses: vjik/github-action-docker-run@v1
+- uses: vjik/docker-run@v1
   with:
     image: python:3.12
     volumes: |
@@ -56,7 +56,7 @@ GitHub Action that runs a command in a new Docker container with a simple, decla
 By default, commands run via `sh -c`. To use bash-specific syntax, invoke `bash -c` explicitly:
 
 ```yaml
-- uses: vjik/github-action-docker-run@v1
+- uses: vjik/docker-run@v1
   with:
     image: bash:5
     volumes: ${{ github.workspace }}:/work
@@ -67,7 +67,7 @@ By default, commands run via `sh -c`. To use bash-specific syntax, invoke `bash 
 ### Private registry
 
 ```yaml
-- uses: vjik/github-action-docker-run@v1
+- uses: vjik/docker-run@v1
   with:
     image: ghcr.io/my-org/my-image:latest
     registry: ghcr.io
@@ -79,7 +79,7 @@ By default, commands run via `sh -c`. To use bash-specific syntax, invoke `bash 
 Without `registry`, authentication defaults to Docker Hub:
 
 ```yaml
-- uses: vjik/github-action-docker-run@v1
+- uses: vjik/docker-run@v1
   with:
     image: my-org/my-private-image:latest
     username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -109,7 +109,7 @@ Without `registry`, authentication defaults to Docker Hub:
 
 ## License
 
-The `vjik/github-action-docker-run` is free software. It is released under the terms of the BSD License.
+The `vjik/docker-run` is free software. It is released under the terms of the BSD License.
 Please see [`LICENSE`](./LICENSE) for more information.
 
 ## Credits
