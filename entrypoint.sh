@@ -18,8 +18,19 @@ fi
 
 inputOptions="--rm ${INPUT_OPTIONS-}"
 
+IFS_SAVE="$IFS"
+IFS='
+'
+for volume in ${INPUT_VOLUMES-}; do
+  [ -n "$volume" ] && inputOptions="$inputOptions -v \"$volume\""
+done
+for env_var in ${INPUT_ENV-}; do
+  [ -n "$env_var" ] && inputOptions="$inputOptions -e \"$env_var\""
+done
+IFS="$IFS_SAVE"
+
 # shellcheck disable=SC2086
-exec docker run --rm \
+eval exec docker run \
     ${inputOptions} \
-    "$INPUT_IMAGE" \
-    sh -c "$INPUT_COMMAND"
+    '"$INPUT_IMAGE"' \
+    sh -c '"$INPUT_COMMAND"'

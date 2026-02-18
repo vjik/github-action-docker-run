@@ -15,7 +15,7 @@ jobs:
         uses: ./
         with:
           image: docker:29.0.3
-          options: -v ${{ github.workspace }}:/work
+          volumes: ${{ github.workspace }}:/work
           command: |
             echo "$DOCKER_VERSION" > /work/docker-version.txt
       - name: Test the output
@@ -36,7 +36,7 @@ jobs:
         uses: ./
         with:
           image: docker:29.0.3
-          options: -v ${{ github.workspace }}:/work
+          volumes: ${{ github.workspace }}:/work
           command: |
             cat /work/someFile > /work/result.txt
       - name: Check if file contents match
@@ -55,7 +55,7 @@ jobs:
         uses: ./
         with:
           image: docker:29.0.3
-          options: -v ${{ github.workspace }}:/work
+          volumes: ${{ github.workspace }}:/work
           command: |
             echo "line1
             line2" > /work/multiline.txt
@@ -77,7 +77,8 @@ jobs:
         uses: ./
         with:
           image: docker:29.0.3
-          options: -v ${{ github.workspace }}:/work -e GREETING="Hello World"
+          volumes: ${{ github.workspace }}:/work
+          env: GREETING=Hello World
           command: |
             echo "$GREETING" > /work/env-result.txt
       - name: Check environment variable
