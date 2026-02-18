@@ -1,0 +1,51 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Run docker action and set output for testing
+        uses: ./
+        id: run-docker
+        with:
+          image: docker:29.0.3
+          command: |
+            echo "::set-output name=docker-version::`echo $DOCKER_VERSION`"
+      - name: Test the output
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const dockerVersion = '${{ steps.run-docker.outputs.docker-version }}';
+            if (dockerVersion !== '29.0.4') {
+              core.setFailed(`Smoke Test Failed`);
+            }
+
+  volume-mount-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Create File to be mounted
+        run: echo "some text" > someFile
+      - name: Run docker action with mounted workspace
+        uses: ./
+        id: run-docker
+        with:
+          image: docker
+          options: -v ${{ github.workspace }}:/work
+          command: |
+            echo "::set-output name=file-contents::`cat /work/someFile`"
+      - name: Check if file contents match
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fileContents = '${{ steps.run-docker.outputs.file-contents }}';
+            if (fileContents !== 'some text') {
+              core.setFailed(`Unable to mount workspace volume`);
+            }
