@@ -11,12 +11,15 @@ inputs:
   registry:
     description: 'Docker registry URL for authentication (e.g. ghcr.io, docker.io)'
     required: false
+    default: ''
   username:
     description: 'Username for Docker registry authentication'
     required: false
+    default: ''
   password:
     description: 'Password or token for Docker registry authentication'
     required: false
+    default: ''
   options:
     description: 'Additional docker run options (e.g. --network host --cpus 2)'
     required: false
