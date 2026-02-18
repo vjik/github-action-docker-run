@@ -13,8 +13,5 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Hadolint
-        uses: hadolint/hadolint-action@v3.3.0
-
       - name: Shellcheck
-        run: shellcheck entrypoint.sh
+        run: shellcheck action.sh

@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 set -eu
 
-username=${INPUT_USERNAME-}
-password=${INPUT_PASSWORD-}
-registry=${INPUT_REGISTRY-}
+username=${INPUT_USERNAME}
+password=${INPUT_PASSWORD}
+registry=${INPUT_REGISTRY}
 if [ -n "$username" ] || [ -n "$password" ]; then
   if [ -z "$username" ] || [ -z "$password" ]; then
     echo "Error: username and password must be both set or both unset." >&2
@@ -16,20 +16,20 @@ if [ -n "$username" ] || [ -n "$password" ]; then
   fi
 fi
 
-inputOptions="--rm --entrypoint=sh ${INPUT_OPTIONS-}"
+inputOptions="--rm --entrypoint=sh ${INPUT_OPTIONS}"
 
 IFS_SAVE="$IFS"
 IFS='
 '
-for volume in ${INPUT_VOLUMES-}; do
+for volume in ${INPUT_VOLUMES}; do
   [ -n "$volume" ] && inputOptions="$inputOptions -v \"$volume\""
 done
-for env_var in ${INPUT_ENV-}; do
+for env_var in ${INPUT_ENV}; do
   [ -n "$env_var" ] && inputOptions="$inputOptions -e \"$env_var\""
 done
 IFS="$IFS_SAVE"
 
-workdir=${INPUT_WORKDIR-}
+workdir=${INPUT_WORKDIR}
 if [ -n "$workdir" ]; then
   inputOptions="$inputOptions -w \"$workdir\""
 fi

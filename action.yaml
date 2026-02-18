@@ -11,12 +11,15 @@ inputs:
   registry:
     description: 'Docker registry URL for authentication (e.g. ghcr.io, docker.io)'
     required: false
+    default: ''
   username:
     description: 'Username for Docker registry authentication'
     required: false
+    default: ''
   password:
     description: 'Password or token for Docker registry authentication'
     required: false
+    default: ''
   options:
     description: 'Additional docker run options (e.g. --network host --cpus 2)'
     required: false
@@ -37,5 +40,17 @@ inputs:
     description: 'Shell command to run inside the container'
     required: true
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: 'composite'
+  steps:
+    - shell: sh
+      env:
+        INPUT_IMAGE: ${{ inputs.image }}
+        INPUT_REGISTRY: ${{ inputs.registry }}
+        INPUT_USERNAME: ${{ inputs.username }}
+        INPUT_PASSWORD: ${{ inputs.password }}
+        INPUT_OPTIONS: ${{ inputs.options }}
+        INPUT_VOLUMES: ${{ inputs.volumes }}
+        INPUT_ENV: ${{ inputs.env }}
+        INPUT_WORKDIR: ${{ inputs.workdir }}
+        INPUT_COMMAND: ${{ inputs.command }}
+      run: ${{ github.action_path }}/action.sh

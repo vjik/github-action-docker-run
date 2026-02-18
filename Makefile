@@ -1,10 +1,7 @@
 .DEFAULT_GOAL := help
 
-hadolint: ## Run hadolint on the Dockerfile
-	docker run --rm -i hadolint/hadolint < Dockerfile
-
 shellcheck: ## Run shellcheck on shell scripts
-	docker run --rm -v "$(shell pwd):/mnt" koalaman/shellcheck:stable entrypoint.sh
+	docker run --rm -v "$(shell pwd):/mnt" koalaman/shellcheck:stable action.sh
 
 # Output the help for each task, see https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## This help.
