@@ -29,6 +29,10 @@ inputs:
     description: 'Environment variables, one per line (e.g. MY_VAR=some value)'
     required: false
     default: ''
+  workdir:
+    description: 'Working directory inside the container'
+    required: false
+    default: ''
   command:
     description: 'Shell command to run inside the container'
     required: true

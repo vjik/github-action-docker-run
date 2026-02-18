@@ -45,8 +45,8 @@ GitHub Action that runs a command in a new Docker container with a simple, decla
     env: |
       CI=true
       GREETING=Hello World
+    workdir: /work
     command: |
-      cd /work
       pip install -r requirements.txt
       python -m pytest tests/
 ```
@@ -95,6 +95,7 @@ Without `registry`, authentication defaults to Docker Hub:
 | `command`  | Yes       | Shell command to run inside the container                                                  |
 | `volumes`  | No        | Volume mounts, one per line (e.g. `/host/path:/container/path`)                            |
 | `env`      | No        | Environment variables, one per line (e.g. `MY_VAR=some value`)                             |
+| `workdir`  | No        | Working directory inside the container                                                     |
 | `options`  | No        | Additional `docker run` options (e.g. `--network host --cpus 2`)                           |
 | `registry` | No        | Docker registry URL for authentication (e.g. `ghcr.io`). Defaults to Docker Hub if omitted |
 | `username` | No        | Username for Docker registry authentication                                                |

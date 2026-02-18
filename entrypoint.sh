@@ -16,7 +16,7 @@ if [ -n "$username" ] || [ -n "$password" ]; then
   fi
 fi
 
-inputOptions="--rm ${INPUT_OPTIONS-}"
+inputOptions="--rm --entrypoint=sh ${INPUT_OPTIONS-}"
 
 IFS_SAVE="$IFS"
 IFS='
@@ -29,8 +29,13 @@ for env_var in ${INPUT_ENV-}; do
 done
 IFS="$IFS_SAVE"
 
+workdir=${INPUT_WORKDIR-}
+if [ -n "$workdir" ]; then
+  inputOptions="$inputOptions -w \"$workdir\""
+fi
+
 # shellcheck disable=SC2086
 eval exec docker run \
     ${inputOptions} \
     '"$INPUT_IMAGE"' \
-    sh -c '"$INPUT_COMMAND"'
+    -c '"$INPUT_COMMAND"'
