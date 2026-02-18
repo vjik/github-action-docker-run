@@ -23,6 +23,10 @@ inputs:
   command:
     description: 'Command to run into container'
     required: true
+  template:
+    description: 'Shell command template where %COMMAND% will be replaced with the value of the `command` input'
+    required: false
+    default: 'sh -c "%COMMAND%"'
 runs:
   using: 'docker'
   image: 'Dockerfile'

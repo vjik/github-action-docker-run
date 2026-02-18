@@ -13,10 +13,11 @@ if [ -n "$username" ] || [ -n "$password" ] || [ -n "$registry" ]; then
 fi
 
 command=$(printf '%s' "$INPUT_COMMAND" | tr '\n' ';')
+preparedCommand=$(printf '%s' "${INPUT_TEMPLATE}" | sed "s/%COMMAND%/$command/g")
 
 # shellcheck disable=SC2086
 exec docker run \
     --volume "/var/run/docker.sock":"/var/run/docker.sock" \
     ${INPUT_OPTIONS-} \
     "$INPUT_IMAGE" \
-    -c "$command"
+    $preparedCommand
